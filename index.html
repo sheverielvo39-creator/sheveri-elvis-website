@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick-service-chuka</title>
+    <meta name="description" content="Quick-service-chuka - Official campus delivery and student store managed by Sheveri Elvis.">
+    <meta name="author" content="Sheveri Elvis">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --accent: #f59e0b;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            text-align: center;
+            padding: 22px 15px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.12);
+        }
+
+        header h1 {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.96;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .container {
+            width: min(100%, 900px);
+            margin: 22px auto;
+            padding: 0 15px;
+            flex: 1;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            font-size: 1.14rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: white;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .hidden { display: none !important; }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .product-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+        }
+
+        .product-badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: var(--primary-dark);
+            font-size: 0.73rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+
+        .product-title {
+            font-size: 0.98rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .product-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--success);
+            margin-bottom: 10px;
+        }
+
+        .btn-add, .btn-proceed, .btn-confirm, .inquiry-btn {
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-add:hover, .btn-proceed:hover, .btn-confirm:hover, .inquiry-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .btn-add {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 9px 8px;
+        }
+
+        .basket-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 12px;
+        }
+
+        .basket-table th, .basket-table td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .basket-table th {
+            background: #f1f5f9;
+            color: var(--primary-dark);
+            font-weight: 800;
+        }
+
+        .qty-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .remove-btn {
+            color: var(--danger);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .basket-total {
+            text-align: right;
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: var(--success);
+            margin-top: 10px;
+        }
+
+        .btn-proceed {
+            width: 100%;
+            background: var(--success);
+            color: white;
+            padding: 12px 16px;
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-confirm {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 12px 16px;
+            margin-top: 15px;
+        }
+
+        .stk-loading-box {
+            text-align: center;
+            padding: 22px 18px;
+            background: #f0f9ff;
+            border: 2px dashed #0284c7;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0284c7;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px auto;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #cbd5e1;
+            cursor: pointer;
+            margin: 12px 0;
+        }
+
+        .star-rating .fa-star.active {
+            color: var(--accent);
+        }
+
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .whatsapp-bg { background-color: #25D366; }
+        .call-bg { background-color: #2563eb; }
+        .facebook-bg { background-color: #1877F2; }
+        .email-bg { background-color: #ea4335; }
+
+        .inquiry-btn {
+            width: 100%;
+            background: #059669;
+            color: white;
+            padding: 12px 16px;
+            margin-top: 12px;
+        }
+
+        .auto-reply {
+            background: #ecfdf5;
+            border: 1px solid #10b981;
+            color: #065f46;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 20px 15px;
+            font-size: 0.88rem;
+            border-top: 3px solid #2563eb;
+        }
+
+        footer strong { color: #f8fafc; }
+
+        @media (max-width: 640px) {
+            .section-card { padding: 16px; }
+            .product-grid { grid-template-columns: 1fr; }
+            .basket-table th, .basket-table td { padding: 8px 6px; }
+            .basket-table td:nth-child(2), .basket-table th:nth-child(2) { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Quick-service-chuka</h1>
+        <p><i class="fa-solid fa-user-gear"></i> Managed & Created by Sheveri Elvis</p>
+    </header>
+
+    <div class="container">
+        <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-user"></i> 1. Customer Information</div>
+
+            <div class="form-group">
+                <label for="fullName">Full Name (As it appears on National ID):</label>
+                <input type="text" id="fullName" class="form-control" placeholder="e.g. Sheveri Elvis">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" class="form-control" placeholder="e.g. 0745160448">
+            </div>
+
+            <div class="form-group">
+                <label for="location">Delivery Location:</label>
+                <select id="location" class="form-control" onchange="toggleLectureHalls()">
+                    <option value="">-- Select Location --</option>
+                    <option value="Ndagani">Ndagani</option>
+                    <option value="Chuka Town">Chuka Town</option>
+                    <option value="Chuka University Field">Chuka University Field</option>
+                    <option value="Lecture Hall">Lecture Hall</option>
+                </select>
+            </div>
+
+            <div class="form-group hidden" id="lectureHallGroup">
+                <label for="lectureHall">Select Lecture Hall / Office Block:</label>
+                <select id="lectureHall" class="form-control">
+                    <option value="SRP">SRP</option>
+                    <option value="SGT">SGT</option>
+                    <option value="PAVILION">PAVILION</option>
+                    <option value="ADMISSION OFFICE">ADMISSION OFFICE</option>
+                    <option value="FTC">FTC</option>
+                    <option value="MEDIA HOUSE">MEDIA HOUSE</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-store"></i> 2. Select Campus Products</div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Electronics</span>
+                        <div class="product-title">Power Bank (10k-20k mAh)</div>
+                        <div class="product-desc">Fast-charging portable battery pack.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 1,500</div>
+                        <button class="btn-add" onclick="addToBasket('Power Bank (10k-20k mAh)', 1500)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Electronics</span>
+                        <div class="product-title">Phone Charger</div>
+                        <div class="product-desc">Fast-charging wall adapter & cable.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 300</div>
+                        <button class="btn-add" onclick="addToBasket('Phone Charger', 300)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Electronics</span>
+                        <div class="product-title">Bluetooth Earphones</div>
+                        <div class="product-desc">Wireless earbuds with long battery.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 800</div>
+                        <button class="btn-add" onclick="addToBasket('Bluetooth Earphones', 800)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Electronics</span>
+                        <div class="product-title">LED Desk Lamp / Torch</div>
+                        <div class="product-desc">Rechargeable light for studying.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 500</div>
+                        <button class="btn-add" onclick="addToBasket('LED Desk Lamp / Torch', 500)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Hostel Gear</span>
+                        <div class="product-title">Storage Containers (Set)</div>
+                        <div class="product-desc">Airtight containers for food/snacks.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 450</div>
+                        <button class="btn-add" onclick="addToBasket('Storage Containers (Set)', 450)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Hostel Gear</span>
+                        <div class="product-title">Hot & Cold Water Flask</div>
+                        <div class="product-desc">Insulated stainless steel flask.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 650</div>
+                        <button class="btn-add" onclick="addToBasket('Hot & Cold Water Flask', 650)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Hostel Gear</span>
+                        <div class="product-title">Hangers & Laundry Basket</div>
+                        <div class="product-desc">Clothes hangers and mesh basket.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 400</div>
+                        <button class="btn-add" onclick="addToBasket('Hangers & Laundry Basket', 400)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Study Gear</span>
+                        <div class="product-title">Scientific Calculator</div>
+                        <div class="product-desc">Standard math/science calculator.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 1,200</div>
+                        <button class="btn-add" onclick="addToBasket('Scientific Calculator', 1200)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Study Gear</span>
+                        <div class="product-title">Wooden Bed Desk Tray</div>
+                        <div class="product-desc">Foldable bed study desk.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 1,200</div>
+                        <button class="btn-add" onclick="addToBasket('Wooden Bed Desk Tray', 1200)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Electronics</span>
+                        <div class="product-title">Bluetooth Speaker</div>
+                        <div class="product-desc">Compact portable bass speaker.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 1,000</div>
+                        <button class="btn-add" onclick="addToBasket('Bluetooth Speaker', 1000)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Hostel Gear</span>
+                        <div class="product-title">Blanket & Bedsheet Set</div>
+                        <div class="product-desc">Warm fleece blanket and sheet.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 1,800</div>
+                        <button class="btn-add" onclick="addToBasket('Blanket & Bedsheet Set', 1800)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Electronics</span>
+                        <div class="product-title">OTG Flash Drive (32-128GB)</div>
+                        <div class="product-desc">Dual USB drive for phone/laptop.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 700</div>
+                        <button class="btn-add" onclick="addToBasket('OTG Flash Drive (32-128GB)', 700)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Services</span>
+                        <div class="product-title">Gas Cylinder & Refill</div>
+                        <div class="product-desc">Gas cylinder with door delivery.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 2,500</div>
+                        <button class="btn-add" onclick="addToBasket('Gas Cylinder & Refill', 2500)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Grocery</span>
+                        <div class="product-title">Fresh Spices & Cooking Pack</div>
+                        <div class="product-desc">Tomatoes, Onions, Big Daddy spice.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 200</div>
+                        <button class="btn-add" onclick="addToBasket('Fresh Spices & Cooking Pack', 200)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Grocery</span>
+                        <div class="product-title">Assorted Cooking Spices</div>
+                        <div class="product-desc">Single-use cooking seasoning packet.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 10</div>
+                        <button class="btn-add" onclick="addToBasket('Assorted Cooking Spices', 10)">+ Add to Basket</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">Sweets & Snacks</span>
+                        <div class="product-title">Sweets & Candy</div>
+                        <div class="product-desc">Delicious sweets / candies.</div>
+                    </div>
+                    <div>
+                        <div class="product-price">KES 10</div>
+                        <button class="btn-add" onclick="addToBasket('Sweets & Candy', 10)">+ Add to Basket</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card" id="basketSection">
+            <div class="section-title"><i class="fa-solid fa-cart-shopping"></i> 3. Your Shopping Basket List</div>
+
+            <div id="emptyBasketNotice" style="text-align: center; color: var(--text-muted); padding: 10px;">
+                Your basket is empty. Click <strong>+ Add to Basket</strong> on any item above!
+            </div>
+
+            <table class="basket-table hidden" id="basketTable">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Subtotal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="basketBody"></tbody>
+            </table>
+
+            <div class="basket-total hidden" id="basketTotalRow">
+                Total Amount: KES <span id="basketTotalAmount">0</span>
+            </div>
+
+            <button id="proceedBtn" class="btn-proceed hidden" onclick="scrollToPayment()">
+                Proceed to Payment <i class="fa-solid fa-arrow-down"></i>
+            </button>
+        </div>
+
+        <div class="section-card" id="paymentSection">
+            <div class="section-title"><i class="fa-solid fa-credit-card"></i> 4. Choose Payment Method & Details</div>
+
+            <div class="form-group">
+                <label for="paymentOption">Payment Option:</label>
+                <select id="paymentOption" class="form-control" onchange="togglePaymentFields()">
+                    <option value="">-- Select Payment Method --</option>
+                    <option value="mpesa">M-Pesa</option>
+                    <option value="bank">Bank Transfer</option>
+                </select>
+            </div>
+
+            <div class="form-group hidden" id="mpesaGroup">
+                <label for="mpesaNumber">Type Your M-Pesa Payment Phone Number:</label>
+                <input type="tel" id="mpesaNumber" class="form-control" placeholder="e.g. 0745160448">
+            </div>
+
+            <div id="bankGroup" class="hidden">
+                <div class="form-group">
+                    <label for="bankSelect">Select Bank:</label>
+                    <select id="bankSelect" class="form-control">
+                        <option value="KCB Bank">KCB Bank</option>
+                        <option value="Equity Bank">Equity Bank</option>
+                        <option value="Co-operative Bank">Co-operative Bank</option>
+                        <option value="NCBA Bank">NCBA Bank</option>
+                        <option value="Absa Bank Kenya">Absa Bank Kenya</option>
+                        <option value="Stanbic Bank">Stanbic Bank</option>
+                        <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+                        <option value="Diamond Trust Bank (DTB)">Diamond Trust Bank (DTB)</option>
+                        <option value="Family Bank">Family Bank</option>
+                        <option value="I&M Bank">I&M Bank</option>
+                        <option value="Prime Bank">Prime Bank</option>
+                        <option value="National Bank of Kenya (NBK)">National Bank of Kenya (NBK)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="accountNumber">Type Your Bank Account / Payment Number:</label>
+                    <input type="text" id="accountNumber" class="form-control" placeholder="Enter Bank Account Number">
+                </div>
+            </div>
+
+            <button id="confirmPayBtn" class="btn-confirm hidden" onclick="confirmPayment()">
+                <i class="fa-solid fa-lock"></i> Confirm Payment Option
+            </button>
+
+            <div id="stkLoadingBox" class="stk-loading-box hidden">
+                <div class="spinner"></div>
+                <h4 style="color: #0369a1; margin-bottom: 4px;">Sending M-Pesa STK Push...</h4>
+                <p style="font-size: 0.85rem; color: #0284c7;">Please check your phone screen to enter your M-Pesa PIN and complete payment.</p>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-star"></i> Rank Us On Your Best Experience</div>
+            <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted);">How was your browsing experience?</p>
+            <div class="star-rating" id="starRating">
+                <i class="fa-solid fa-star" onclick="rate(1)"></i>
+                <i class="fa-solid fa-star" onclick="rate(2)"></i>
+                <i class="fa-solid fa-star" onclick="rate(3)"></i>
+                <i class="fa-solid fa-star" onclick="rate(4)"></i>
+                <i class="fa-solid fa-star" onclick="rate(5)"></i>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-address-book"></i> Official Contact Information</div>
+
+            <div class="contact-list">
+                <a href="https://wa.me/254745160448" target="_blank" class="contact-item whatsapp-bg">
+                    <i class="fa-brands fa-whatsapp fa-xl"></i> WhatsApp: 0745160448
+                </a>
+                <a href="tel:0180665972" class="contact-item call-bg">
+                    <i class="fa-solid fa-phone fa-lg"></i> Call: 0180665972
+                </a>
+                <a href="https://facebook.com" target="_blank" class="contact-item facebook-bg">
+                    <i class="fa-brands fa-facebook fa-xl"></i> Facebook: itz lk sheveri
+                </a>
+                <a href="mailto:sheverielvo39@gmail.com" class="contact-item email-bg">
+                    <i class="fa-solid fa-envelope fa-lg"></i> Email: sheverielvo39@gmail.com
+                </a>
+            </div>
+
+            <button class="inquiry-btn" onclick="sendInquiry()"><i class="fa-solid fa-paper-plane"></i> Send Inquiry / Question</button>
+
+            <div id="replyBox" class="auto-reply hidden">
+                <i class="fa-solid fa-circle-check"></i> <strong>Auto-Reply:</strong><br>
+                Thank you for being part of the journey what can u help you aou lovely customer
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 <strong>Quick-service-chuka</strong>. All rights reserved.</p>
+        <p style="margin-top: 6px; font-size: 0.82rem; color: #cbd5e1;">Website owned, developed, and managed by <strong>Sheveri Elvis</strong>.</p>
+    </footer>
+
+    <script>
+        let basket = [];
+
+        function toggleLectureHalls() {
+            const loc = document.getElementById('location').value;
+            const group = document.getElementById('lectureHallGroup');
+            group.classList.toggle('hidden', loc !== 'Lecture Hall');
+        }
+
+        function addToBasket(name, price) {
+            const existing = basket.find(item => item.name === name);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                basket.push({ name, price, qty: 1 });
+            }
+            renderBasket();
+        }
+
+        function changeQty(index, delta) {
+            basket[index].qty += delta;
+            if (basket[index].qty <= 0) {
+                basket.splice(index, 1);
+            }
+            renderBasket();
+        }
+
+        function removeItem(index) {
+            basket.splice(index, 1);
+            renderBasket();
+        }
+
+        function renderBasket() {
+            const table = document.getElementById('basketTable');
+            const tbody = document.getElementById('basketBody');
+            const notice = document.getElementById('emptyBasketNotice');
+            const totalRow = document.getElementById('basketTotalRow');
+            const proceedBtn = document.getElementById('proceedBtn');
+
+            if (basket.length === 0) {
+                table.classList.add('hidden');
+                totalRow.classList.add('hidden');
+                proceedBtn.classList.add('hidden');
+                notice.classList.remove('hidden');
+                return;
+            }
+
+            notice.classList.add('hidden');
+            table.classList.remove('hidden');
+            totalRow.classList.remove('hidden');
+            proceedBtn.classList.remove('hidden');
+
+            tbody.innerHTML = '';
+            let total = 0;
+
+            basket.forEach((item, index) => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${item.name}</strong></td>
+                    <td>KES ${item.price.toLocaleString()}</td>
+                    <td>
+                        <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                        <span style="margin: 0 6px; font-weight: bold;">${item.qty}</span>
+                        <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                    </td>
+                    <td><strong>KES ${subtotal.toLocaleString()}</strong></td>
+                    <td><button class="remove-btn" onclick="removeItem(${index})"><i class="fa-solid fa-trash"></i></button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('basketTotalAmount').innerText = total.toLocaleString();
+        }
+
+        function scrollToPayment() {
+            document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function togglePaymentFields() {
+            const method = document.getElementById('paymentOption').value;
+            const mpesa = document.getElementById('mpesaGroup');
+            const bank = document.getElementById('bankGroup');
+            const confirmBtn = document.getElementById('confirmPayBtn');
+            const loadingBox = document.getElementById('stkLoadingBox');
+
+            mpesa.classList.toggle('hidden', method !== 'mpesa');
+            bank.classList.toggle('hidden', method !== 'bank');
+            confirmBtn.classList.toggle('hidden', !method);
+            loadingBox.classList.add('hidden');
+        }
+
+        function confirmPayment() {
+            const method = document.getElementById('paymentOption').value;
+            const loadingBox = document.getElementById('stkLoadingBox');
+
+            if (method === 'mpesa') {
+                const phoneVal = document.getElementById('mpesaNumber').value.trim();
+                if (!phoneVal) {
+                    alert('Please type your M-Pesa phone number first!');
+                    return;
+                }
+                loadingBox.classList.remove('hidden');
+                return;
+            }
+
+            if (method === 'bank') {
+                const bankAcc = document.getElementById('accountNumber').value.trim();
+                if (!bankAcc) {
+                    alert('Please type your bank account number first!');
+                    return;
+                }
+                alert('Bank transfer details recorded! Please proceed to complete payment.');
+                return;
+            }
+
+            alert('Please choose a payment method first.');
+        }
+
+        function rate(stars) {
+            const allStars = document.querySelectorAll('#starRating .fa-star');
+            allStars.forEach((star, index) => {
+                star.classList.toggle('active', index < stars);
+            });
+        }
+
+        function sendInquiry() {
+            document.getElementById('replyBox').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
